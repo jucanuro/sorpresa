@@ -14,160 +14,58 @@
             --bg-light: #ffffff;
         }
 
-        /* Bloqueo de scroll y configuración base */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            touch-action: manipulation;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 
         body, html {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
+            height: 100%; width: 100%; overflow: hidden;
             background-color: var(--bg-light);
             background-image: radial-gradient(circle at center, #ffffff 0%, #f9f9f9 100%);
-            font-family: 'Inter', sans-serif;
-            color: #1a1a1a;
-            position: relative;
+            font-family: 'Inter', sans-serif; color: #1a1a1a; position: relative;
         }
 
-        /* Capa de Estrellas/Luces (Dorado sobre Blanco) */
-        #star-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
+        #star-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 
-        /* Barra de Progreso Superior */
         .progress-container {
-            position: fixed;
-            top: env(safe-area-inset-top, 20px);
-            left: 0;
-            width: 100%;
-            height: 2px;
-            display: flex;
-            z-index: 110;
-            padding: 0 10px;
-            gap: 4px;
+            position: fixed; top: env(safe-area-inset-top, 20px); left: 0; width: 100%; height: 2px;
+            display: flex; z-index: 110; padding: 0 10px; gap: 4px;
         }
-        .progress-bar {
-            height: 100%;
-            background: rgba(0, 0, 0, 0.05);
-            flex-grow: 1;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--dark-gold), var(--gold));
-            width: 0%;
-        }
+        .progress-bar { height: 100%; background: rgba(0, 0, 0, 0.05); flex-grow: 1; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--dark-gold), var(--gold)); width: 0%; }
 
-        /* Slides */
         .slide {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            text-align: center;
-            z-index: 10;
-            height: 100%;
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 25px;
+            opacity: 0; visibility: hidden; transition: opacity 0.8s ease;
+            text-align: center; z-index: 10; height: 100%;
         }
         .slide.active { opacity: 1; visibility: visible; }
 
-        /* Contenedor Futurista de Imagen */
         .modern-frame {
-            position: relative;
-            width: 75vw;
-            max-width: 280px;
-            height: 42vh;
-            max-height: 380px;
-            margin-bottom: 20px;
-            padding: 8px;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 40px 10px 40px 10px;
-            border: 1px solid rgba(212, 175, 55, 0.25);
+            position: relative; width: 75vw; max-width: 280px; height: 42vh; max-height: 380px;
+            margin-bottom: 20px; padding: 8px; background: var(--glass); backdrop-filter: blur(10px);
+            border-radius: 40px 10px 40px 10px; border: 1px solid rgba(212, 175, 55, 0.25);
             box-shadow: 0 15px 35px rgba(212, 175, 55, 0.1);
         }
-
-        .modern-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 32px 5px 32px 5px;
-        }
-
-        .frame-corner {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border: 2px solid var(--gold);
-            z-index: 2;
-        }
+        .modern-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 32px 5px 32px 5px; }
+        .frame-corner { position: absolute; width: 30px; height: 30px; border: 2px solid var(--gold); z-index: 2; }
         .top-right { top: -2px; right: -2px; border-left: 0; border-bottom: 0; border-radius: 0 12px 0 0; }
         .bottom-left { bottom: -2px; left: -2px; border-right: 0; border-top: 0; border-radius: 0 0 0 12px; }
 
-        /* Textos */
-        .title { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 1.8rem; 
-            font-style: italic; 
-            margin-bottom: 15px;
-            color: #111;
-        }
-        .text { 
-            font-size: 0.95rem; 
-            line-height: 1.6; 
-            font-weight: 300; 
-            color: #333; 
-            max-width: 90%;
-        }
+        .title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; margin-bottom: 15px; color: #111; }
+        .text { font-size: 0.95rem; line-height: 1.6; font-weight: 300; color: #333; max-width: 92%; }
         .gold-accent { color: var(--gold); font-weight: 500; }
 
-        /* Controles Mobile */
         .mobile-controls {
-            position: fixed;
-            bottom: env(safe-area-inset-bottom, 40px);
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            z-index: 200;
+            position: fixed; bottom: env(safe-area-inset-bottom, 40px); width: 100%;
+            display: flex; justify-content: center; align-items: center; gap: 25px; z-index: 200;
         }
-
         .btn-ctrl {
-            background: #ffffff;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            width: 50px; 
-            height: 50px;
-            border-radius: 50%;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
+            background: #ffffff; border: 1px solid rgba(212, 175, 55, 0.2);
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-
-        .play-pause-btn { 
-            width: 60px; 
-            height: 60px; 
-            border: 1.5px solid var(--gold);
-        }
-
+        .play-pause-btn { width: 60px; height: 60px; border: 1.5px solid var(--gold); }
         .btn-ctrl svg { width: 22px; height: 22px; fill: var(--gold); }
     </style>
 </head>
@@ -177,9 +75,14 @@
     <div class="progress-container" id="progressTicks"></div>
 
     <div class="slide active" id="s0">
-        <p class="title">Para Pilar</p>
-        <p class="text">Momentos que merecen ser pausados,<br>y personas que merecen ser celebradas.</p>
+        <p class="title">Un 2026 para Pilar</p>
+        <p class="text">
+            El 2026 no llege con promesas,<br>
+            sino llega con momentos que merecen quedarse,<br>
+            y con personas que hacen que el tiempo valga la pena y esa persona eres tú Pilar .....
+        </p>
     </div>
+
 
     <div class="slide" id="s1">
         <div class="modern-frame">
@@ -187,15 +90,17 @@
             <div class="frame-corner bottom-left"></div>
             <img src="pilar1.jpeg" alt="Pilar 1">
         </div>
-        <p class="text" style="font-style: italic;">"La luz que no intenta brillar,<br>pero ilumina todo a su paso."</p>
+        <p class="text" style="font-style: italic;">"Tú eres esa luz que no intenta brillar,<br>pero ilumina todo a su paso."</p>
     </div>
 
     <div class="slide" id="s2">
         <p class="text">
-            Alguien llega a tu vida sin ruido,<br>
-            y de repente,<br><span class="gold-accent">el silencio se vuelve música</span>.
+            Alguien que llega a tu vida sin anunciarse,<br>
+            y sin darte cuenta,<br>
+            <span class="gold-accent">todo empieza a sonar distinto</span>.
         </p>
     </div>
+
 
     <div class="slide" id="s3">
         <div class="modern-frame">
@@ -216,45 +121,34 @@
     </div>
 
     <div class="slide" id="s5">
-        <p class="title">Feliz 2026, Pilar</p>
+        <p class="title">Brilla este 2026, Pilar</p>
         <p class="text">
-            Deseo que este nuevo año sea el escenario de tus mayores <span class="gold-accent">éxitos</span>. 
-            Que cada meta que te propongas se cumpla con la misma brillantez que te caracteriza. 
-            Mereces todo lo extraordinario que el mundo tiene para ofrecer.<br><br>
-            No sé qué nos traiga el destino, pero me siento profundamente <span class="gold-accent">afortunado</span> 
-            por el privilegio de caminar este nuevo ciclo a tu lado.
+            Deseo que este año sea el escenario de tus mayores <span class="gold-accent">éxitos</span>. 
+            Que cada paso que des te acerque a la felicidad que tanto mereces.<br><br>
+            Me siento profundamente <span class="gold-accent">afortunado</span> de que estés en mi camino, 
+            y me hace muy feliz saber que este nuevo ciclo <span class="gold-accent">será una gran oportunidad de caminar el mismo sendero</span>.
         </p>
         <p style="margin-top:25px; color:var(--gold); letter-spacing:4px; font-size:0.75rem; font-weight:600; border-top: 1px solid rgba(212,175,55,0.1); padding-top: 15px;">
-            — CON ADMIRACIÓN, JUAN CARLOS
+            — CON TODO MI CARIÑO, JUAN CARLOS
         </p>
     </div>
 
     <div class="mobile-controls">
-        <div class="btn-ctrl" onclick="prevSlide()">
-            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </div>
+        <div class="btn-ctrl" onclick="prevSlide()"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></div>
         <div class="btn-ctrl play-pause-btn" onclick="togglePause()">
             <svg id="pauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             <svg id="playIcon" viewBox="0 0 24 24" style="display:none; margin-left:3px;"><path d="M8 5v14l11-7z"/></svg>
         </div>
-        <div class="btn-ctrl" onclick="nextSlide()">
-            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-        </div>
+        <div class="btn-ctrl" onclick="nextSlide()"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
     </div>
 
     <script>
         const totalSlides = 6;
-        let current = 0;
-        let progressWidth = 0;
-        let isPaused = false;
-        let progressInterval;
+        let current = 0, progressWidth = 0, isPaused = false, progressInterval;
 
         const progressTicks = document.getElementById('progressTicks');
         for (let i = 0; i < totalSlides; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'progress-bar';
-            bar.innerHTML = `<div class="progress-fill" id="fill-${i}"></div>`;
-            progressTicks.appendChild(bar);
+            progressTicks.innerHTML += `<div class="progress-bar"><div class="progress-fill" id="fill-${i}"></div></div>`;
         }
 
         function runProgress() {
@@ -263,61 +157,44 @@
             progressInterval = setInterval(() => {
                 if (!isPaused) {
                     progressWidth += 0.45;
-                    if (progressWidth >= 100) {
-                        progressWidth = 100;
-                        fill.style.width = '100%';
-                        nextSlide();
-                    } else {
-                        fill.style.width = progressWidth + '%';
-                    }
+                    if (progressWidth >= 100) { nextSlide(); }
+                    else { fill.style.width = progressWidth + '%'; }
                 }
             }, 35);
         }
 
         function showSlide(index) {
             clearInterval(progressInterval);
-            for (let i = 0; i < totalSlides; i++) {
-                document.getElementById(`fill-${i}`).style.width = i < index ? '100%' : '0%';
-            }
+            for (let i = 0; i < totalSlides; i++) document.getElementById(`fill-${i}`).style.width = i < index ? '100%' : '0%';
             document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
             document.getElementById(`s${index}`).classList.add('active');
-            current = index;
-            progressWidth = 0;
-            runProgress();
+            current = index; progressWidth = 0; runProgress();
         }
 
         function nextSlide() { if (current < totalSlides - 1) showSlide(current + 1); }
         function prevSlide() { if (current > 0) showSlide(current - 1); }
-
         function togglePause() {
             isPaused = !isPaused;
             document.getElementById('pauseIcon').style.display = isPaused ? 'none' : 'block';
             document.getElementById('playIcon').style.display = isPaused ? 'block' : 'none';
         }
 
-        // --- SISTEMA DE ESTRELLAS DORADAS ---
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function initCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 
         class Star {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 2;
-                this.opacity = Math.random() * 0.7; // Un poco más tenue sobre blanco
+                this.opacity = Math.random() * 0.7;
                 this.speed = Math.random() * 0.015;
             }
             draw() {
                 ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
             update() {
                 this.opacity += this.speed;
@@ -326,7 +203,6 @@
         }
 
         for (let i = 0; i < 70; i++) stars.push(new Star());
-
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => { s.update(); s.draw(); });
@@ -334,8 +210,7 @@
         }
 
         window.addEventListener('resize', initCanvas);
-        initCanvas();
-        animate();
+        initCanvas(); animate();
         window.onload = runProgress;
     </script>
 </body>

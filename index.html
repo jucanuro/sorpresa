@@ -10,10 +10,11 @@
         :root {
             --gold: #D4AF37;
             --dark-gold: #996515;
-            --glass: rgba(255, 255, 255, 0.85);
+            --glass: rgba(255, 255, 255, 0.8);
+            --bg-light: #ffffff;
         }
 
-        /* Evitar scroll y rebote en mobile */
+        /* Bloqueo de scroll y configuración base */
         * { 
             margin: 0; 
             padding: 0; 
@@ -25,17 +26,29 @@
         body, html {
             height: 100%;
             width: 100%;
-            overflow: hidden; /* Bloquea el scroll por completo */
-            background-color: #ffffff;
+            overflow: hidden;
+            background-color: var(--bg-light);
+            background-image: radial-gradient(circle at center, #ffffff 0%, #f9f9f9 100%);
             font-family: 'Inter', sans-serif;
             color: #1a1a1a;
             position: relative;
         }
 
-        /* Progreso superior ajustado */
+        /* Capa de Estrellas/Luces (Dorado sobre Blanco) */
+        #star-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Barra de Progreso Superior */
         .progress-container {
             position: fixed;
-            top: env(safe-area-inset-top, 15px);
+            top: env(safe-area-inset-top, 20px);
             left: 0;
             width: 100%;
             height: 2px;
@@ -46,7 +59,7 @@
         }
         .progress-bar {
             height: 100%;
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
             flex-grow: 1;
             border-radius: 10px;
             overflow: hidden;
@@ -57,38 +70,38 @@
             width: 0%;
         }
 
-        /* Slides optimizados para altura de pantalla */
+        /* Slides */
         .slide {
             position: absolute;
             inset: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Centra todo verticalmente */
+            justify-content: center;
             padding: 20px;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.6s ease;
+            transition: opacity 0.8s ease, transform 0.8s ease;
             text-align: center;
             z-index: 10;
-            height: 100%; /* Ocupa exactamente el alto de la pantalla */
+            height: 100%;
         }
         .slide.active { opacity: 1; visibility: visible; }
 
-        /* --- CONTENEDOR FOTOGRÁFICO AJUSTABLE --- */
+        /* Contenedor Futurista de Imagen */
         .modern-frame {
             position: relative;
-            width: 75vw; /* Basado en ancho de pantalla */
+            width: 75vw;
             max-width: 280px;
-            height: 45vh; /* Basado en alto de pantalla para que nunca sobrepase */
-            max-height: 400px;
-            margin-bottom: 2vh;
+            height: 42vh;
+            max-height: 380px;
+            margin-bottom: 20px;
             padding: 8px;
             background: var(--glass);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             border-radius: 40px 10px 40px 10px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.1);
         }
 
         .modern-frame img {
@@ -108,27 +121,27 @@
         .top-right { top: -2px; right: -2px; border-left: 0; border-bottom: 0; border-radius: 0 12px 0 0; }
         .bottom-left { bottom: -2px; left: -2px; border-right: 0; border-top: 0; border-radius: 0 0 0 12px; }
 
-        /* Textos escalables */
+        /* Textos */
         .title { 
             font-family: 'Playfair Display', serif; 
-            font-size: 7vw; /* Tamaño dinámico según ancho */
-            max-size: 2.2rem;
+            font-size: 1.8rem; 
             font-style: italic; 
             margin-bottom: 15px;
+            color: #111;
         }
         .text { 
-            font-size: 1rem; 
+            font-size: 0.95rem; 
             line-height: 1.6; 
             font-weight: 300; 
             color: #333; 
-            max-width: 85%;
+            max-width: 90%;
         }
         .gold-accent { color: var(--gold); font-weight: 500; }
 
-        /* CONTROLES MOBILE INFERIORES */
+        /* Controles Mobile */
         .mobile-controls {
             position: fixed;
-            bottom: env(safe-area-inset-bottom, 30px);
+            bottom: env(safe-area-inset-bottom, 40px);
             width: 100%;
             display: flex;
             justify-content: center;
@@ -138,15 +151,15 @@
         }
 
         .btn-ctrl {
-            background: white;
-            border: 1px solid rgba(0,0,0,0.03);
+            background: #ffffff;
+            border: 1px solid rgba(212, 175, 55, 0.2);
             width: 50px; 
             height: 50px;
             border-radius: 50%;
             display: flex; 
             align-items: center; 
             justify-content: center;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .play-pause-btn { 
@@ -155,11 +168,12 @@
             border: 1.5px solid var(--gold);
         }
 
-        .btn-ctrl svg { width: 20px; height: 20px; fill: var(--gold); }
+        .btn-ctrl svg { width: 22px; height: 22px; fill: var(--gold); }
     </style>
 </head>
 <body>
 
+    <canvas id="star-canvas"></canvas>
     <div class="progress-container" id="progressTicks"></div>
 
     <div class="slide active" id="s0">
@@ -202,9 +216,17 @@
     </div>
 
     <div class="slide" id="s5">
-        <p class="title">Feliz 2026</p>
-        <p class="text">No sé qué nos traiga este año,<br>pero me siento afortunado de caminarlo cerca de ti.</p>
-        <p style="margin-top:20px; color:var(--gold); letter-spacing:3px; font-size:0.7rem; font-weight:600;">JUAN CARLOS</p>
+        <p class="title">Feliz 2026, Pilar</p>
+        <p class="text">
+            Deseo que este nuevo año sea el escenario de tus mayores <span class="gold-accent">éxitos</span>. 
+            Que cada meta que te propongas se cumpla con la misma brillantez que te caracteriza. 
+            Mereces todo lo extraordinario que el mundo tiene para ofrecer.<br><br>
+            No sé qué nos traiga el destino, pero me siento profundamente <span class="gold-accent">afortunado</span> 
+            por el privilegio de caminar este nuevo ciclo a tu lado.
+        </p>
+        <p style="margin-top:25px; color:var(--gold); letter-spacing:4px; font-size:0.75rem; font-weight:600; border-top: 1px solid rgba(212,175,55,0.1); padding-top: 15px;">
+            — CON ADMIRACIÓN, JUAN CARLOS
+        </p>
     </div>
 
     <div class="mobile-controls">
@@ -221,7 +243,7 @@
     </div>
 
     <script>
-        const totalSlides = 6; // Ajustado a 6 slides
+        const totalSlides = 6;
         let current = 0;
         let progressWidth = 0;
         let isPaused = false;
@@ -240,7 +262,7 @@
             const fill = document.getElementById(`fill-${current}`);
             progressInterval = setInterval(() => {
                 if (!isPaused) {
-                    progressWidth += 0.5;
+                    progressWidth += 0.45;
                     if (progressWidth >= 100) {
                         progressWidth = 100;
                         fill.style.width = '100%';
@@ -273,6 +295,47 @@
             document.getElementById('playIcon').style.display = isPaused ? 'block' : 'none';
         }
 
+        // --- SISTEMA DE ESTRELLAS DORADAS ---
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.opacity = Math.random() * 0.7; // Un poco más tenue sobre blanco
+                this.speed = Math.random() * 0.015;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            update() {
+                this.opacity += this.speed;
+                if (this.opacity > 0.7 || this.opacity < 0.1) this.speed *= -1;
+            }
+        }
+
+        for (let i = 0; i < 70; i++) stars.push(new Star());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => { s.update(); s.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        animate();
         window.onload = runProgress;
     </script>
 </body>

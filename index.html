@@ -5,263 +5,275 @@
     <title>Para Pilar | 2026</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@200;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@200;300;400;500&display=swap');
 
         :root {
             --gold: #D4AF37;
-            --soft-gray: #fcfcfc;
-            --text-main: #2c2c2c;
+            --dark-gold: #996515;
+            --glass: rgba(255, 255, 255, 0.85);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Evitar scroll y rebote en mobile */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            touch-action: manipulation;
+        }
 
         body, html {
             height: 100%;
             width: 100%;
-            overflow: hidden;
+            overflow: hidden; /* Bloquea el scroll por completo */
             background-color: #ffffff;
             font-family: 'Inter', sans-serif;
-            color: var(--text-main);
+            color: #1a1a1a;
+            position: relative;
         }
 
-        /* Barra de progreso elegante */
+        /* Progreso superior ajustado */
         .progress-container {
             position: fixed;
-            top: 0;
+            top: env(safe-area-inset-top, 15px);
             left: 0;
             width: 100%;
-            height: 3px;
+            height: 2px;
             display: flex;
-            z-index: 100;
+            z-index: 110;
             padding: 0 10px;
-            gap: 5px;
-            background: rgba(255,255,255,0.8);
+            gap: 4px;
         }
         .progress-bar {
             height: 100%;
-            background: #eee;
+            background: rgba(0,0,0,0.05);
             flex-grow: 1;
-            border-radius: 2px;
+            border-radius: 10px;
             overflow: hidden;
-            margin-top: 10px;
         }
         .progress-fill {
             height: 100%;
-            background: var(--gold);
+            background: linear-gradient(90deg, var(--dark-gold), var(--gold));
             width: 0%;
         }
 
-        /* Media luna minimalista animada */
-        .moon-design {
-            position: fixed;
-            top: 10%;
-            right: -150px;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            box-shadow: 50px 50px 0 0 rgba(212, 175, 55, 0.03);
-            z-index: 1;
-            animation: float 10s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(-20px, 20px); }
-        }
-
-        .stars-bg {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
+        /* Slides optimizados para altura de pantalla */
         .slide {
             position: absolute;
             inset: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 40px;
+            justify-content: center; /* Centra todo verticalmente */
+            padding: 20px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 2s ease, transform 2s ease;
+            transition: all 0.6s ease;
             text-align: center;
             z-index: 10;
+            height: 100%; /* Ocupa exactamente el alto de la pantalla */
         }
+        .slide.active { opacity: 1; visibility: visible; }
 
-        .slide.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Estética de la imagen */
-        .image-frame {
-            width: 250px;
-            height: 350px;
-            margin-bottom: 30px;
+        /* --- CONTENEDOR FOTOGRÁFICO AJUSTABLE --- */
+        .modern-frame {
             position: relative;
+            width: 75vw; /* Basado en ancho de pantalla */
+            max-width: 280px;
+            height: 45vh; /* Basado en alto de pantalla para que nunca sobrepase */
+            max-height: 400px;
+            margin-bottom: 2vh;
+            padding: 8px;
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border-radius: 40px 10px 40px 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
         }
-        .image-frame img {
+
+        .modern-frame img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 125px 125px 0 0; /* Arco elegante */
-            filter: grayscale(20%);
-        }
-        .image-frame::after {
-            content: '';
-            position: absolute;
-            inset: -10px;
-            border: 0.5px solid var(--gold);
-            border-radius: 135px 135px 0 0;
-            z-index: -1;
+            border-radius: 32px 5px 32px 5px;
         }
 
-        /* Tipografía */
-        .title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-style: italic;
+        .frame-corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--gold);
+            z-index: 2;
+        }
+        .top-right { top: -2px; right: -2px; border-left: 0; border-bottom: 0; border-radius: 0 12px 0 0; }
+        .bottom-left { bottom: -2px; left: -2px; border-right: 0; border-top: 0; border-radius: 0 0 0 12px; }
+
+        /* Textos escalables */
+        .title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 7vw; /* Tamaño dinámico según ancho */
+            max-size: 2.2rem;
+            font-style: italic; 
             margin-bottom: 15px;
-            letter-spacing: -0.5px;
+        }
+        .text { 
+            font-size: 1rem; 
+            line-height: 1.6; 
+            font-weight: 300; 
+            color: #333; 
+            max-width: 85%;
+        }
+        .gold-accent { color: var(--gold); font-weight: 500; }
+
+        /* CONTROLES MOBILE INFERIORES */
+        .mobile-controls {
+            position: fixed;
+            bottom: env(safe-area-inset-bottom, 30px);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            z-index: 200;
         }
 
-        .text {
-            font-size: 1.05rem;
-            line-height: 2;
-            font-weight: 200;
-            letter-spacing: 1px;
-            color: #666;
+        .btn-ctrl {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.03);
+            width: 50px; 
+            height: 50px;
+            border-radius: 50%;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
         }
 
-        .gold-accent { color: var(--gold); font-weight: 400; }
-
-        .footer-note {
-            position: absolute;
-            bottom: 40px;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--gold);
-            opacity: 0.6;
+        .play-pause-btn { 
+            width: 60px; 
+            height: 60px; 
+            border: 1.5px solid var(--gold);
         }
 
-        /* Punto animado para indicar "hay más" */
-        .scroll-indicator {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: var(--gold);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.2; }
-            50% { opacity: 1; }
-            100% { opacity: 0.2; }
-        }
+        .btn-ctrl svg { width: 20px; height: 20px; fill: var(--gold); }
     </style>
 </head>
 <body>
 
     <div class="progress-container" id="progressTicks"></div>
-    <div class="moon-design"></div>
-    <div class="stars-bg" id="starField"></div>
 
     <div class="slide active" id="s0">
         <p class="title">Para Pilar</p>
-        <p class="text">Un pequeño pensamiento<br>antes de que el año termine...</p>
-        <div class="scroll-indicator">La historia comienza aquí</div>
+        <p class="text">Momentos que merecen ser pausados,<br>y personas que merecen ser celebradas.</p>
     </div>
 
     <div class="slide" id="s1">
-        <div class="image-frame">
-            <img src="pilar.jpeg" alt="Pilar">
+        <div class="modern-frame">
+            <div class="frame-corner top-right"></div>
+            <div class="frame-corner bottom-left"></div>
+            <img src="pilar1.jpeg" alt="Pilar 1">
         </div>
-        <p class="title" style="font-style: normal; letter-spacing: 2px;">PILAR</p>
+        <p class="text" style="font-style: italic;">"La luz que no intenta brillar,<br>pero ilumina todo a su paso."</p>
     </div>
 
     <div class="slide" id="s2">
         <p class="text">
-            Hay personas que no hacen ruido,<br>
-            pero <span class="gold-accent">cambian el ambiente</span>.<br><br>
-            Gracias por estar.<br>
-            Gracias por tu forma.
+            Alguien llega a tu vida sin ruido,<br>
+            y de repente,<br><span class="gold-accent">el silencio se vuelve música</span>.
         </p>
     </div>
 
     <div class="slide" id="s3">
-        <p class="text">
-            Gracias por llegar a este año de mi vida<br>
-            sin prometer nada,<br>
-            y aun así <span class="gold-accent">significar tanto</span>.
-        </p>
+        <div class="modern-frame">
+            <div class="frame-corner top-right"></div>
+            <div class="frame-corner bottom-left"></div>
+            <img src="pilar2.png" alt="Pilar 2">
+        </div>
+        <p class="text">Por esos pequeños instantes<br>donde <span class="gold-accent">el tiempo se detiene</span>.</p>
     </div>
 
     <div class="slide" id="s4">
+        <div class="modern-frame">
+            <div class="frame-corner top-right"></div>
+            <div class="frame-corner bottom-left"></div>
+            <img src="pilar3.jpeg" alt="Pilar 3">
+        </div>
+        <p class="text">Te convertiste en <span class="gold-accent">mi parte favorita</span> del año.</p>
+    </div>
+
+    <div class="slide" id="s5">
         <p class="title">Feliz 2026</p>
-        <p class="text">
-            Que este nuevo año te encuentre así:<br>
-            auténtica, fuerte y serena.
-        </p>
-        <p class="footer-note">— Juan Carlos</p>
+        <p class="text">No sé qué nos traiga este año,<br>pero me siento afortunado de caminarlo cerca de ti.</p>
+        <p style="margin-top:20px; color:var(--gold); letter-spacing:3px; font-size:0.7rem; font-weight:600;">JUAN CARLOS</p>
+    </div>
+
+    <div class="mobile-controls">
+        <div class="btn-ctrl" onclick="prevSlide()">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </div>
+        <div class="btn-ctrl play-pause-btn" onclick="togglePause()">
+            <svg id="pauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            <svg id="playIcon" viewBox="0 0 24 24" style="display:none; margin-left:3px;"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="btn-ctrl" onclick="nextSlide()">
+            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
     </div>
 
     <script>
-        const totalSlides = 5;
-        const displayTime = 6000; // 6 segundos por slide
+        const totalSlides = 6; // Ajustado a 6 slides
         let current = 0;
+        let progressWidth = 0;
+        let isPaused = false;
+        let progressInterval;
 
-        // Crear barras de progreso
-        const progressContainer = document.getElementById('progressTicks');
+        const progressTicks = document.getElementById('progressTicks');
         for (let i = 0; i < totalSlides; i++) {
             const bar = document.createElement('div');
             bar.className = 'progress-bar';
             bar.innerHTML = `<div class="progress-fill" id="fill-${i}"></div>`;
-            progressContainer.appendChild(bar);
+            progressTicks.appendChild(bar);
         }
 
-        // Estrellas amarillas pequeñas y elegantes
-        const starField = document.getElementById('starField');
-        for (let i = 0; i < 30; i++) {
-            const star = document.createElement('div');
-            star.style.position = 'absolute';
-            star.style.width = '2px';
-            star.style.height = '2px';
-            star.style.backgroundColor = '#D4AF37';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.borderRadius = '50%';
-            star.style.opacity = Math.random();
-            starField.appendChild(star);
-        }
-
-        function runSequence() {
+        function runProgress() {
+            clearInterval(progressInterval);
             const fill = document.getElementById(`fill-${current}`);
-            let width = 0;
-            const interval = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    nextSlide();
-                } else {
-                    width += 0.4; // Ajuste para los 6 segundos
-                    fill.style.width = width + '%';
+            progressInterval = setInterval(() => {
+                if (!isPaused) {
+                    progressWidth += 0.5;
+                    if (progressWidth >= 100) {
+                        progressWidth = 100;
+                        fill.style.width = '100%';
+                        nextSlide();
+                    } else {
+                        fill.style.width = progressWidth + '%';
+                    }
                 }
-            }, 24);
+            }, 35);
         }
 
-        function nextSlide() {
-            if (current < totalSlides - 1) {
-                document.getElementById(`s${current}`).classList.remove('active');
-                current++;
-                document.getElementById(`s${current}`).classList.add('active');
-                runSequence();
+        function showSlide(index) {
+            clearInterval(progressInterval);
+            for (let i = 0; i < totalSlides; i++) {
+                document.getElementById(`fill-${i}`).style.width = i < index ? '100%' : '0%';
             }
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById(`s${index}`).classList.add('active');
+            current = index;
+            progressWidth = 0;
+            runProgress();
         }
 
-        // Iniciar
-        window.onload = runSequence;
+        function nextSlide() { if (current < totalSlides - 1) showSlide(current + 1); }
+        function prevSlide() { if (current > 0) showSlide(current - 1); }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            document.getElementById('pauseIcon').style.display = isPaused ? 'none' : 'block';
+            document.getElementById('playIcon').style.display = isPaused ? 'block' : 'none';
+        }
+
+        window.onload = runProgress;
     </script>
 </body>
 </html>
